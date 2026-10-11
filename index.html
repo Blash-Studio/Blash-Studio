@@ -8,7 +8,211 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<style>
+:root{
+  --bg:#06070b; --s1:#0d0f17; --s2:#141725; --s3:#1b1f33; --line:#232840;
+  --text:#eceefa; --muted:#8f95b0; --blue:#3b6cff; --violet:#8a5cf6; --ok:#38d39f;
+  --grad:linear-gradient(100deg,#3b6cff,#8a5cf6);
+  --display:"Sora","Segoe UI",system-ui,sans-serif; --body:"DM Sans","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 84px);scroll-behavior:smooth;height:auto}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0;letter-spacing:-.01em}
+:focus-visible{outline:2px solid #7f9bff;outline-offset:3px;border-radius:6px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* En-tête */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(6,7,11,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:20px;min-height:68px;flex-wrap:wrap;padding-block:10px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:1.2rem;font-weight:700;letter-spacing:-.02em;flex:none}
+.logo svg{width:36px;height:36px;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.logo:hover svg{transform:rotate(60deg)}
+.logo b{font-weight:800}.logo span{font-weight:400;color:var(--muted)}
+.nav{display:flex;gap:4px;flex:none}
+.nav a,.nav button{background:none;border:0;padding:8px 12px;border-radius:9px;color:var(--muted);font-size:.95rem;transition:color .2s,background .2s}
+.nav a:hover,.nav button:hover{color:var(--text);background:var(--s2)}
+.search{flex:1;min-width:0;max-width:460px;position:relative;margin-left:auto}
+.search input{width:100%;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--s2);color:var(--text);padding:0 14px 0 42px;font:inherit;font-size:.95rem;transition:border-color .2s,box-shadow .2s}
+.search input::placeholder{color:#6f7590}
+.search input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,108,255,.25)}
+.search svg{position:absolute;left:14px;top:12px;width:18px;height:18px;color:var(--muted);pointer-events:none}
+.actions{display:flex;gap:8px;align-items:center;flex:none}
+.iconbtn{position:relative;height:42px;min-width:42px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--s2);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:border-color .2s,background .2s,transform .2s}
+.iconbtn:hover{border-color:#3a4270;background:var(--s3)}
+.iconbtn svg{width:19px;height:19px}
+.count{position:absolute;top:-6px;right:-6px;min-width:19px;height:19px;border-radius:10px;background:var(--grad);font-size:.72rem;font-weight:600;display:grid;place-items:center;padding:0 5px}
+.avatar{width:26px;height:26px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:700;font-size:.8rem;font-family:var(--display)}
+@media (max-width:980px){.nav{display:none}}
+@media (max-width:640px){.search{order:3;max-width:none;flex-basis:100%;margin-left:0}.bar{gap:12px}.actions{margin-left:auto}.iconbtn .lbl{display:none}}
+
+/* Boutons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:48px;padding:0 24px;border-radius:12px;border:1px solid transparent;font-weight:600;font-size:1rem;transition:transform .2s,box-shadow .25s,filter .2s,background .2s,border-color .2s;text-align:center}
+.btn.primary{background:var(--grad);color:#fff;box-shadow:0 10px 30px -12px rgba(91,100,255,.8)}
+.btn.primary:hover{transform:translateY(-2px);filter:brightness(1.1);box-shadow:0 16px 36px -12px rgba(111,100,255,.95)}
+.btn.ghost{background:rgba(255,255,255,.04);border-color:#323860;color:var(--text)}
+.btn.ghost:hover{background:rgba(255,255,255,.09);border-color:#5663a8}
+.btn.big{height:56px;font-size:1.05rem;width:100%}
+.btn svg{width:20px;height:20px;flex:none}
+.btn.on{border-color:#8a5cf6;background:rgba(138,92,246,.18)}
+.btn.on svg{fill:#c9b0ff;stroke:#c9b0ff}
+
+/* Bannière */
+.hero{position:relative;height:clamp(460px,66vh,640px);overflow:hidden;border-bottom:1px solid var(--line);background:var(--s1)}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility .9s}
+.slide.on{opacity:1;visibility:visible}
+.slide .art{position:absolute;inset:0;width:100%;height:100%;transform:scale(1.08);transition:transform 8s ease-out}
+.slide.on .art{transform:scale(1)}
+.slide::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,7,11,.92) 0%,rgba(6,7,11,.55) 45%,rgba(6,7,11,.05) 100%),linear-gradient(0deg,rgba(6,7,11,.95) 0%,rgba(6,7,11,0) 45%)}
+.hero-copy{position:absolute;z-index:2;left:0;right:0;bottom:clamp(120px,22vh,160px)}
+.hero-copy .wrap{max-width:1240px}
+.hero-copy .inner{max-width:600px}
+.hero h1{font-size:clamp(2.3rem,6vw,4.2rem);font-weight:800;margin-bottom:12px}
+.hero p{font-size:clamp(1rem,2vw,1.15rem);color:#c3c8de;margin:0 0 20px;max-width:46ch}
+.hero .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.tag{display:inline-flex;align-items:center;height:26px;padding:0 11px;border-radius:13px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);font-size:.82rem;color:#dfe3f5;backdrop-filter:blur(6px)}
+.tag.free{background:rgba(56,211,159,.14);border-color:rgba(56,211,159,.4);color:#7cf0c6}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px}
+.slide.on .hero-copy .inner{animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.thumbs{position:absolute;z-index:3;left:0;right:0;bottom:22px}
+.thumbs .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.thumb{position:relative;text-align:left;padding:12px 14px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(10,12,20,.62);backdrop-filter:blur(10px);overflow:hidden;transition:background .25s,border-color .25s,transform .25s}
+.thumb:hover{background:rgba(24,28,48,.8);border-color:rgba(255,255,255,.28);transform:translateY(-2px)}
+.thumb strong{display:block;font-family:var(--display);font-size:.92rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thumb small{color:var(--muted);font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.thumb .bar2{position:absolute;left:0;bottom:0;height:3px;width:100%;background:transparent}
+.thumb .bar2 i{display:block;height:100%;width:0;background:var(--grad)}
+.thumb.on{border-color:rgba(138,92,246,.7)}
+.thumb.on .bar2 i{animation:fill 7s linear forwards}
+.hero.hold .thumb.on .bar2 i{animation-play-state:paused}
+@keyframes fill{to{width:100%}}
+@media (max-width:760px){.thumbs .wrap{grid-template-columns:repeat(2,1fr);gap:8px}.thumb small{display:none}.thumb:nth-child(n+3){display:none}.hero-copy{bottom:100px}.hero{height:540px}}
+
+/* Sections */
+.section{padding:44px 0 6px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.section-head h2{font-size:clamp(1.35rem,3vw,1.75rem);font-weight:700}
+.section-head p{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+.row{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(240px,270px);gap:18px;overflow-x:auto;padding:6px 2px 16px;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#2d3354 transparent}
+.row>*{scroll-snap-align:start}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+
+/* Cartes */
+.card{position:relative;background:var(--s1);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s}
+.card:hover,.card:focus-within{transform:translateY(-5px);border-color:rgba(138,92,246,.65);box-shadow:0 18px 44px -20px rgba(59,108,255,.7)}
+.cover{position:relative;aspect-ratio:16/10;overflow:hidden;display:block;background:var(--s2)}
+.cover .art{position:absolute;inset:0;width:100%;height:100%;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.card:hover .art{transform:scale(1.08)}
+.cover .badge{position:absolute;top:10px;left:10px;height:24px;padding:0 10px;border-radius:12px;background:rgba(6,7,11,.72);border:1px solid rgba(56,211,159,.45);color:#7cf0c6;font-size:.78rem;font-weight:600;display:inline-flex;align-items:center;backdrop-filter:blur(6px)}
+.card-body{padding:14px 14px 15px;display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.card h3{font-size:1.02rem;font-weight:600;margin-bottom:3px}
+.card h3 a::after{content:"";position:absolute;inset:0;z-index:1}
+.card .meta{margin:0;color:var(--muted);font-size:.86rem;line-height:1.4}
+.card .size{display:block;margin-top:6px;font-size:.82rem;color:#aab0cc}
+.fav{position:relative;z-index:2;flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--s2);display:grid;place-items:center;transition:background .2s,border-color .2s,transform .2s}
+.fav:hover{border-color:#8a5cf6;transform:scale(1.08)}
+.fav svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
+.fav.on{background:rgba(138,92,246,.2);border-color:#8a5cf6;color:#c9b0ff}
+.fav.on svg{fill:#c9b0ff}
+
+/* Filtres */
+.filters{padding:30px 0 4px}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{height:40px;padding:0 18px;border-radius:20px;border:1px solid var(--line);background:var(--s1);color:#c3c8de;font-size:.95rem;transition:background .2s,border-color .2s,color .2s,transform .2s}
+.chip:hover{border-color:#4a548f;color:#fff;transform:translateY(-1px)}
+.chip.on{background:var(--grad);border-color:transparent;color:#fff;font-weight:600}
+.empty{border:1px dashed #323860;border-radius:16px;padding:44px 24px;text-align:center;background:var(--s1)}
+.empty h3{font-size:1.2rem;margin-bottom:8px}
+.empty p{color:var(--muted);margin:0 auto 20px;max-width:46ch}
+.note{margin:6px 0 0;color:var(--muted);font-size:.9rem}
+
+/* Page jeu */
+.crumbs{padding:22px 0 14px}
+.crumbs a{color:var(--muted);display:inline-flex;gap:6px;align-items:center;font-size:.95rem;transition:color .2s}
+.crumbs a:hover{color:#fff}
+.banner{position:relative;height:clamp(240px,40vh,400px);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+.banner .art{position:absolute;inset:0;width:100%;height:100%}
+.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,7,11,.92),rgba(6,7,11,.1) 65%)}
+.banner .ttl{position:absolute;z-index:2;left:clamp(18px,3vw,36px);right:18px;bottom:clamp(18px,3vw,30px)}
+.banner h1{font-size:clamp(2rem,5.5vw,3.6rem);font-weight:800;margin-bottom:10px}
+.banner .tags{display:flex;gap:8px;flex-wrap:wrap}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:36px;margin-top:30px;align-items:start}
+.panel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 90px);background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:16px}
+.panel .price{font-family:var(--display);font-size:1.5rem;font-weight:700}
+.facts{display:grid;gap:0;margin:0}
+.facts div{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-top:1px solid var(--line);font-size:.93rem}
+.facts dt{color:var(--muted)}
+.facts dd{margin:0;text-align:right;font-weight:500}
+.dest{font-size:.85rem;color:var(--muted);margin:0}
+.dest strong{color:#c3c8de;font-weight:500}
+.dl-progress{display:grid;gap:6px;font-size:.88rem;color:#c3c8de}
+.dl-progress .track{height:8px;border-radius:4px;background:var(--s3);overflow:hidden}
+.dl-progress .track i{display:block;height:100%;width:0;background:var(--grad);transition:width .2s}
+details.how{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--s2)}
+details.how summary{cursor:pointer;font-weight:600;font-size:.95rem}
+details.how ol{margin:12px 0 4px;padding-left:20px;color:#c3c8de;font-size:.92rem;display:grid;gap:8px}
+.block{margin-bottom:38px}
+.block h2{font-size:1.35rem;margin-bottom:14px}
+.prose p{color:#c8cde2;max-width:68ch;margin:0 0 14px}
+.shots{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.shot{position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.shot .art{position:absolute;inset:0;width:100%;height:100%;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.shot:hover .art{transform:scale(1.07)}
+.shots-note{font-size:.87rem;color:var(--muted);margin:10px 0 0}
+.shots-note a{color:#9fb4ff;text-decoration:underline;text-underline-offset:3px}
+.specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.spec{background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.spec small{display:block;color:var(--muted);font-size:.82rem;margin-bottom:2px}
+@media (max-width:960px){.layout{grid-template-columns:1fr}.panel{position:static;order:-1}}
+@media (max-width:560px){.shots,.specs{grid-template-columns:1fr}}
+
+/* Compte */
+.account{max-width:560px;margin:40px auto 0;background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:30px}
+.account h1{font-size:1.7rem;margin-bottom:10px}
+.account p{color:#c3c8de}
+.account .row2{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.who{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.who .avatar{width:54px;height:54px;font-size:1.4rem}
+.page-title{padding:34px 0 6px}
+.page-title h1{font-size:clamp(1.7rem,4vw,2.3rem)}
+.page-title p{color:var(--muted);margin:6px 0 0}
+
+/* Dialogue */
+dialog{border:1px solid #323860;border-radius:20px;background:var(--s1);color:var(--text);padding:0;width:min(440px,calc(100vw - 28px))}
+dialog::backdrop{background:rgba(3,4,8,.78);backdrop-filter:blur(4px)}
+dialog[open]{animation:pop .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.dlg{padding:26px}
+.dlg-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.dlg-head h2{font-size:1.35rem}
+.x{width:36px;height:36px;border-radius:50%;border:0;background:var(--s2);font-size:1.1rem;line-height:1}
+.x:hover{background:var(--s3)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--s2);border-radius:12px;padding:4px;margin-bottom:18px}
+.tabs button{height:38px;border:0;border-radius:9px;background:none;color:var(--muted);font-weight:500}
+.tabs button.on{background:var(--s3);color:#fff}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field label{font-size:.9rem;color:#c3c8de}
+.field input{height:46px;border-radius:11px;border:1px solid var(--line);background:var(--s2);color:var(--text);padding:0 14px;font:inherit}
+.field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,108,255,.25)}
+.err{min-height:1.3em;color:#ff8a9a;font-size:.9rem;margin:0 0 10px}
+.fine{font-size:.82rem;color:var(--muted);margin:14px 0 0}
+
+/* Divers */
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);opacity:0;pointer-events:none;background:#1d2240;border:1px solid #3d4680;padding:12px 18px;border-radius:12px;font-size:.95rem;z-index:100;transition:opacity .25s,transform .25s;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{margin-top:70px;border-top:1px solid var(--line);background:var(--s1);padding:34px 0 40px;color:var(--muted);font-size:.92rem}
+footer .cols{display:flex;gap:30px;justify-content:space-between;flex-wrap:wrap}
+footer p{margin:8px 0 0;max-width:62ch}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
 </head>
 <body>
 
@@ -73,6 +277,407 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="js/app.js"></script>
+<script>
+"use strict";
+/* ---------- Données ---------- */
+const GENRES = {action:"Action",aventure:"Aventure",sport:"Sport",simulation:"Simulation",horreur:"Horreur",strategie:"Stratégie",multijoueur:"Multijoueur"};
+const GAMES = [
+ {id:"veloren",name:"Veloren",genres:["aventure","multijoueur","action"],dev:"Communauté Veloren",license:"Open source (GPL-3.0)",ver:"Alpha, mises à jour régulières",size:"~ 250 Mo",platforms:["Windows","macOS","Linux"],h:[165,235],
+  pitch:"Un monde ouvert en voxels, à explorer seul ou à plusieurs.",
+  desc:["Veloren est un jeu de rôle multijoueur en monde ouvert, entièrement open source. Explorez des terrains générés de façon procédurale, affrontez des créatures, récoltez, construisez et partez à l'aventure sur des serveurs communautaires.\n","Le jeu est en développement actif : de nouvelles zones, classes et mécaniques de combat arrivent au fil des versions."],
+  req:{os:"Windows 10, macOS 11 ou Linux récent",cpu:"4 cœurs, 2,5 GHz",ram:"8 Go",gpu:"Compatible Vulkan, DirectX 12 ou Metal",disk:"2 Go"},
+  official:"https://veloren.net/",download:"https://veloren.net/",tags:["popular","hero"],n:16},
+ {id:"supertuxkart",name:"SuperTuxKart",genres:["sport","multijoueur","action"],dev:"Équipe SuperTuxKart",license:"Open source (GPL-3.0)",ver:"Stable",size:"~ 700 Mo",platforms:["Windows","macOS","Linux"],h:[205,285],
+  pitch:"Des courses de karts déjantées, en local ou en ligne.",
+  desc:["SuperTuxKart est un jeu de course de karts en 3D : bonus, raccourcis, circuits fantaisistes et pilotes issus de l'univers du logiciel libre.\n","Défiez l'ordinateur en mode Grand Prix, jouez à plusieurs sur le même écran, ou rejoignez des parties en ligne."],
+  req:{os:"Windows 7 ou plus récent, macOS, Linux",cpu:"Double cœur, 2 GHz",ram:"2 Go",gpu:"OpenGL 3.3 ou Vulkan",disk:"1 Go"},
+  official:"https://supertuxkart.net/",download:"https://supertuxkart.net/Download",tags:["popular","hero"],n:15},
+ {id:"0ad",name:"0 A.D.",genres:["strategie","multijoueur"],dev:"Wildfire Games",license:"Open source (GPL-2.0+)",ver:"Alpha, une release majeure par semestre",size:"~ 1,5 Go",platforms:["Windows","macOS","Linux"],h:[28,255],
+  pitch:"Bâtissez une civilisation antique, des premiers villages aux empires.",
+  desc:["0 A.D. est un jeu de stratégie en temps réel historique, situé dans l'Antiquité. Gérez votre économie, bâtissez une cité, faites progresser votre civilisation et menez vos armées au combat.\n","Le jeu propose des campagnes, des escarmouches contre l'ordinateur et un mode multijoueur en ligne."],
+  req:{os:"Windows 10, macOS ou Linux",cpu:"Double cœur, 2 GHz",ram:"4 Go",gpu:"OpenGL 3.3",disk:"4 Go"},
+  official:"https://play0ad.com/",download:"https://play0ad.com/download/",tags:["popular","hero"],n:14},
+ {id:"xonotic",name:"Xonotic",genres:["action","multijoueur"],dev:"Équipe Xonotic",license:"Open source (GPL)",ver:"Stable",size:"~ 1 Go",platforms:["Windows","macOS","Linux"],h:[310,215],
+  pitch:"Un FPS d'arène ultra rapide, aux sensations arcade.",
+  desc:["Xonotic est un jeu de tir à la première personne axé sur la vitesse et la précision. Armes variées, cartes d'arène soignées et modes de jeu multiples : match à mort, capture de drapeau, domination et plus encore.\n","Le jeu se joue en ligne sur de nombreux serveurs, ou hors ligne contre des bots."],
+  req:{os:"Windows 7 ou plus récent, macOS, Linux",cpu:"Double cœur, 2 GHz",ram:"4 Go",gpu:"Compatible OpenGL 3",disk:"2 Go"},
+  official:"https://xonotic.org/",download:"https://xonotic.org/download/",tags:["popular","hero"],n:13},
+ {id:"luanti",name:"Luanti",genres:["simulation","aventure","multijoueur"],dev:"Communauté Luanti",license:"Open source (LGPL-2.1+)",ver:"Stable",size:"~ 50 Mo",platforms:["Windows","macOS","Linux"],h:[120,200],
+  pitch:"Un moteur de jeux en blocs, avec des milliers de mods.",
+  desc:["Luanti (anciennement Minetest) est un moteur de jeux en blocs libre et gratuit. Il propose des jeux et des mods créés par la communauté : survie, construction, aventure, mini-jeux.\n","Très léger, il tourne sur des machines modestes et permet de jouer en solo ou sur des serveurs en ligne."],
+  req:{os:"Windows, macOS ou Linux",cpu:"2 GHz",ram:"2 Go",gpu:"Compatible OpenGL",disk:"500 Mo"},
+  official:"https://www.luanti.org/",download:"https://www.luanti.org/downloads/",tags:["popular"],n:12},
+ {id:"openttd",name:"OpenTTD",genres:["simulation","strategie"],dev:"Équipe OpenTTD",license:"Open source (GPL-2.0)",ver:"Stable",size:"~ 30 Mo",platforms:["Windows","macOS","Linux"],h:[215,170],
+  pitch:"Bâtissez un empire de transport par rail, route, mer et air.",
+  desc:["OpenTTD est un jeu de simulation économique et de gestion inspiré de Transport Tycoon Deluxe. Posez des voies, organisez vos lignes, transportez passagers et marchandises, et faites prospérer votre compagnie.\n","Il se joue en solo ou en multijoueur, et accepte de nombreuses extensions de la communauté."],
+  req:{os:"Windows, macOS ou Linux",cpu:"1 GHz",ram:"2 Go",gpu:"Carte graphique de base",disk:"200 Mo"},
+  official:"https://www.openttd.org/",download:"https://www.openttd.org/downloads/openttd-releases/latest",tags:["popular"],n:11},
+ {id:"wesnoth",name:"La Bataille pour Wesnoth",genres:["strategie","aventure","multijoueur"],dev:"Équipe Wesnoth",license:"Open source (GPL-2.0+)",ver:"Stable",size:"~ 200 Mo",platforms:["Windows","macOS","Linux"],h:[95,225],
+  pitch:"De la stratégie au tour par tour dans un univers de fantasy.",
+  desc:["La Bataille pour Wesnoth est un jeu de stratégie au tour par tour dans un monde de fantasy. Recrutez des unités, faites-les progresser au fil des combats et suivez de longues campagnes narratives.\n","Vous pouvez aussi affronter d'autres joueurs en ligne ou installer des campagnes créées par la communauté."],
+  req:{os:"Windows, macOS ou Linux",cpu:"1,5 GHz",ram:"2 Go",gpu:"Carte graphique de base",disk:"500 Mo"},
+  official:"https://www.wesnoth.org/",download:"https://www.wesnoth.org/#download",tags:["recommended"],n:10},
+ {id:"mindustry",name:"Mindustry",genres:["strategie","simulation"],dev:"Anuken",license:"Open source (GPL-3.0)",ver:"Stable",size:"~ 100 Mo",platforms:["Windows","macOS","Linux"],h:[190,300],
+  pitch:"Automatisez vos usines et défendez-les contre des vagues d'ennemis.",
+  desc:["Mindustry mêle gestion de chaînes de production et défense de tour. Extrayez des ressources, construisez des convoyeurs et des usines, puis installez vos défenses pour repousser les vagues d'ennemis.\n","Le jeu propose une campagne, des cartes personnalisées et un mode multijoueur."],
+  req:{os:"Windows, macOS ou Linux",cpu:"Double cœur, 2 GHz",ram:"2 Go",gpu:"Compatible OpenGL 2.0",disk:"300 Mo"},
+  official:"https://mindustrygame.github.io/",download:"https://mindustrygame.github.io/",tags:["popular","recommended"],n:9},
+ {id:"cataclysm",name:"Cataclysm: Dark Days Ahead",genres:["horreur","simulation","aventure"],dev:"Communauté Cataclysm",license:"Open source (CC BY-SA)",ver:"Stable et expérimentale",size:"~ 150 Mo",platforms:["Windows","macOS","Linux"],h:[350,265],
+  pitch:"Survivre dans un monde dévasté par un cataclysme.",
+  desc:["Cataclysm: Dark Days Ahead est un jeu de survie au tour par tour dans un monde post-apocalyptique. Fouillez, fabriquez, construisez un abri et affrontez zombies et mutants, avec un niveau de détail rare.\n","L'univers est sombre et exigeant, plutôt destiné à un public adulte."],
+  req:{os:"Windows, macOS ou Linux",cpu:"1,5 GHz",ram:"2 Go",gpu:"Carte graphique de base",disk:"1 Go"},
+  official:"https://cataclysmdda.org/",download:"https://cataclysmdda.org/",tags:["recommended"],n:8},
+ {id:"openra",name:"OpenRA",genres:["strategie","multijoueur"],dev:"Communauté OpenRA",license:"Open source (GPL-3.0)",ver:"Stable",size:"~ 100 Mo",platforms:["Windows","macOS","Linux"],h:[8,230],
+  pitch:"Les grands classiques de la stratégie en temps réel, modernisés.",
+  desc:["OpenRA est un projet qui recrée des jeux de stratégie en temps réel des années 90 avec un moteur moderne. Bases à bâtir, armées à produire et batailles rapides, en solo ou contre d'autres joueurs.\n","Le moteur accueille plusieurs jeux et propose des parties multijoueur en ligne."],
+  req:{os:"Windows, macOS ou Linux",cpu:"Double cœur, 2 GHz",ram:"2 Go",gpu:"Compatible OpenGL 3.2",disk:"500 Mo"},
+  official:"https://www.openra.net/",download:"https://www.openra.net/download/",tags:["recommended","popular"],n:7},
+ {id:"endless-sky",name:"Endless Sky",genres:["aventure","simulation","action"],dev:"Communauté Endless Sky",license:"Open source (GPL-3.0)",ver:"Stable",size:"~ 300 Mo",platforms:["Windows","macOS","Linux"],h:[240,190],
+  pitch:"Exploration spatiale, commerce et combats en vue de dessus.",
+  desc:["Endless Sky est un jeu d'exploration spatiale en 2D. Pilotez votre vaisseau, commercez entre les systèmes, acceptez des missions, améliorez votre flotte ou lancez-vous dans des combats.\n","Votre histoire dépend de vos choix : marchand, mercenaire, explorateur ou pirate."],
+  req:{os:"Windows, macOS ou Linux",cpu:"Double cœur, 2 GHz",ram:"2 Go",gpu:"Compatible OpenGL 3.0",disk:"1 Go"},
+  official:"https://endless-sky.github.io/",download:"https://endless-sky.github.io/",tags:["recommended"],n:6},
+ {id:"warzone2100",name:"Warzone 2100",genres:["strategie","action","multijoueur"],dev:"Équipe Warzone 2100",license:"Open source (GPL-2.0+)",ver:"Stable",size:"~ 150 Mo",platforms:["Windows","macOS","Linux"],h:[40,215],
+  pitch:"Stratégie futuriste : concevez vos unités et reconquérez la Terre.",
+  desc:["Warzone 2100 est un jeu de stratégie en temps réel qui se déroule après l'effondrement de la civilisation. Recherchez des technologies, concevez vos propres unités et menez des campagnes sur plusieurs théâtres d'opérations.\n","Des parties multijoueur et des escarmouches contre l'IA sont également disponibles."],
+  req:{os:"Windows, macOS ou Linux",cpu:"Double cœur, 2 GHz",ram:"2 Go",gpu:"OpenGL 3.0 ou Vulkan",disk:"1 Go"},
+  official:"https://wz2100.net/",download:"https://wz2100.net/",tags:["recommended"],n:5},
+ {id:"redeclipse",name:"Red Eclipse",genres:["action","multijoueur"],dev:"Équipe Red Eclipse",license:"Open source (zlib)",ver:"Stable",size:"~ 600 Mo",platforms:["Windows","macOS","Linux"],h:[335,225],
+  pitch:"Un jeu de tir acrobatique : courses murales, sauts et combats aériens.",
+  desc:["Red Eclipse est un jeu de tir à la première personne axé sur l'acrobatie. Courez sur les murs, esquivez, glissez et combattez dans des arènes verticales.\n","Il propose plusieurs modes, un éditeur de cartes intégré et des parties en ligne."],
+  req:{os:"Windows, macOS ou Linux",cpu:"Double cœur, 2 GHz",ram:"4 Go",gpu:"Compatible OpenGL 3",disk:"2 Go"},
+  official:"https://www.redeclipse.net/",download:"https://www.redeclipse.net/",tags:[],n:4},
+ {id:"unvanquished",name:"Unvanquished",genres:["action","horreur","multijoueur"],dev:"Équipe Unvanquished",license:"Open source (GPL-3.0)",ver:"Alpha",size:"~ 1 Go",platforms:["Windows","macOS","Linux"],h:[270,185],
+  pitch:"Humains contre aliens : tir à la première personne et construction de base.",
+  desc:["Unvanquished oppose deux équipes asymétriques : les humains, qui bâtissent des défenses et tirent à distance, et les aliens, qui attaquent au corps à corps et se multiplient.\n","Les parties se jouent en ligne, avec des cartes à l'ambiance sombre et tendue."],
+  req:{os:"Windows, macOS ou Linux",cpu:"Double cœur, 2,5 GHz",ram:"4 Go",gpu:"Compatible OpenGL 3.2",disk:"2 Go"},
+  official:"https://unvanquished.net/",download:"https://unvanquished.net/download/",tags:[],n:3},
+ {id:"flightgear",name:"FlightGear",genres:["simulation"],dev:"Équipe FlightGear",license:"Open source (GPL-2.0+)",ver:"Stable (support long terme)",size:"~ 600 Mo",platforms:["Windows","macOS","Linux"],h:[200,150],
+  pitch:"Un simulateur de vol libre, avec des centaines d'avions et d'aéroports.",
+  desc:["FlightGear est un simulateur de vol réaliste. Choisissez parmi des centaines d'appareils, des avions de ligne aux planeurs, et survolez la planète entière.\n","Les scénéries se téléchargent à la demande, et vous pouvez voler seul ou avec d'autres pilotes en ligne."],
+  req:{os:"Windows, macOS ou Linux",cpu:"Quadruple cœur, 2,5 GHz",ram:"8 Go",gpu:"Compatible OpenGL 3.3",disk:"10 Go ou plus selon les scénéries"},
+  official:"https://www.flightgear.org/",download:"https://www.flightgear.org/download/",tags:[],n:2},
+ {id:"hedgewars",name:"Hedgewars",genres:["strategie","multijoueur","sport"],dev:"Équipe Hedgewars",license:"Open source (GPL-2.0)",ver:"Stable",size:"~ 150 Mo",platforms:["Windows","macOS","Linux"],h:[130,320],
+  pitch:"Des hérissons armés jusqu'aux piquants, sur des cartes destructibles.",
+  desc:["Hedgewars est un jeu de stratégie au tour par tour où deux équipes de hérissons s'affrontent sur des terrains destructibles. Bazookas, cordes, explosifs et armes improbables sont de la partie.\n","On y joue en solo, à plusieurs sur le même ordinateur, ou en ligne."],
+  req:{os:"Windows, macOS ou Linux",cpu:"1,5 GHz",ram:"2 Go",gpu:"Compatible OpenGL 2.0",disk:"500 Mo"},
+  official:"https://www.hedgewars.org/",download:"https://www.hedgewars.org/download.html",tags:[],n:1}
+];
+const BY_ID = Object.fromEntries(GAMES.map(g=>[g.id,g]));
+const HERO = GAMES.filter(g=>g.tags.includes("hero")).sort((a,b)=>b.n-a.n).map(g=>g.id);
+
+/* ---------- Utilitaires ---------- */
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const esc = s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}},
+  del(k){try{localStorage.removeItem(k)}catch(e){}}
+};
+const ICON = {
+  heart:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.6-9.3-9A5.4 5.4 0 0 1 12 6.2 5.4 5.4 0 0 1 21.3 12C19 16.4 12 21 12 21z"/></svg>',
+  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>',
+  back:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>'
+};
+let toastT;
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),3200)}
+
+/* ---------- Illustrations générées ---------- */
+function rng(seed){let h=1779033703^seed.length;for(let i=0;i<seed.length;i++){h=Math.imul(h^seed.charCodeAt(i),3432918353);h=h<<13|h>>>19}
+  return()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return((h^=h>>>16)>>>0)/4294967296}}
+let uid=0;
+function art(g,v=0){
+  const r=rng(g.id+":"+v), id="a"+(++uid), [h1,h2]=g.h, ang=Math.floor(r()*70+15);
+  let s=`<svg class="art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs>`+
+   `<linearGradient id="${id}g" gradientTransform="rotate(${ang} .5 .5)"><stop offset="0" stop-color="hsl(${h1},70%,26%)"/><stop offset="1" stop-color="hsl(${h2},65%,8%)"/></linearGradient>`+
+   `<radialGradient id="${id}s"><stop offset="0" stop-color="hsl(${(h1+40)%360},100%,70%)" stop-opacity=".95"/><stop offset=".45" stop-color="hsl(${(h1+20)%360},95%,60%)" stop-opacity=".28"/><stop offset="1" stop-color="hsl(${h1},90%,55%)" stop-opacity="0"/></radialGradient></defs>`+
+   `<rect width="320" height="200" fill="url(#${id}g)"/>`;
+  for(let i=0;i<22;i++)s+=`<circle cx="${(r()*320).toFixed(1)}" cy="${(r()*110).toFixed(1)}" r="${(.5+r()*1.1).toFixed(2)}" fill="#fff" opacity="${(.2+r()*.5).toFixed(2)}"/>`;
+  s+=`<circle cx="${(50+r()*220).toFixed(1)}" cy="${(25+r()*65).toFixed(1)}" r="${(46+r()*50).toFixed(1)}" fill="url(#${id}s)"/>`;
+  for(let i=0;i<6;i++){const x=r()*320,y=r()*130,w=40+r()*90;
+    s+=`<polygon points="${x.toFixed(1)},${y.toFixed(1)} ${(x+w).toFixed(1)},${(y+r()*40).toFixed(1)} ${(x+r()*w).toFixed(1)},${(y+30+r()*70).toFixed(1)}" fill="hsl(${r()<.5?h1:h2},80%,60%)" opacity="${(.05+r()*.12).toFixed(2)}"/>`}
+  [[118,46,10,"hsl("+h2+",50%,15%)"],[148,36,8,"hsl("+h2+",46%,10%)"],[176,26,7,"hsl("+h1+",30%,5%)"]].forEach(([b,a,n,f])=>{
+    let d=`M0 200 L0 ${b}`;for(let i=1;i<=n;i++)d+=` L${(i*320/n).toFixed(1)} ${(b-r()*a).toFixed(1)}`;
+    s+=`<path d="${d} L320 200Z" fill="${f}"/>`});
+  return s+`</svg>`;
+}
+
+/* ---------- Favoris & compte ---------- */
+let session = store.get("blash:session",null);
+const favKey = ()=>"blash:fav:"+(session||"guest");
+let favs = store.get(favKey(),[]);
+const isFav = id=>favs.includes(id);
+function saveFavs(){store.set(favKey(),favs);updateHeader()}
+function toggleFav(id){
+  const was=isFav(id);
+  favs = was? favs.filter(x=>x!==id) : [...favs,id];
+  saveFavs();
+  $$(`[data-fav="${id}"]`).forEach(b=>{
+    b.classList.toggle("on",!was);b.setAttribute("aria-pressed",String(!was));
+    const l=b.querySelector(".fl");
+    if(l)l.textContent=!was?"Dans vos favoris":"Ajouter aux favoris"; else b.setAttribute("aria-label",!was?"Retirer des favoris":"Ajouter aux favoris");
+  });
+  toast(!was?`${BY_ID[id].name} ajouté aux favoris`:`${BY_ID[id].name} retiré des favoris`);
+  if(location.hash==="#/favoris")route();
+}
+function users(){return store.get("blash:users",{})}
+function updateHeader(){
+  const c=$("#favCount");c.textContent=favs.length;c.hidden=!favs.length;
+  const u=session?users()[session]:null;
+  $("#accountBtn").innerHTML = u? `<span class="avatar" aria-hidden="true">${esc(u.name.charAt(0).toUpperCase())}</span><span class="lbl">${esc(u.name)}</span>` : `${ICON.user}<span class="lbl">Connexion</span>`;
+  $("#accountBtn").setAttribute("aria-label",u?"Mon compte":"Se connecter ou créer un compte");
+}
+async function hashPw(pw,salt){
+  if(!(window.crypto&&crypto.subtle))throw new Error("nocrypto");
+  const enc=new TextEncoder(),key=await crypto.subtle.importKey("raw",enc.encode(pw),"PBKDF2",false,["deriveBits"]);
+  const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:enc.encode(salt),iterations:150000,hash:"SHA-256"},key,256);
+  return btoa(String.fromCharCode(...new Uint8Array(bits)));
+}
+function startSession(email){
+  const guest=store.get("blash:fav:guest",[]);
+  session=email;store.set("blash:session",email);
+  const own=store.get(favKey(),[]);
+  favs=[...new Set([...own,...guest])];store.set(favKey(),favs);store.del("blash:fav:guest");
+  updateHeader();
+}
+function endSession(){session=null;store.del("blash:session");favs=store.get(favKey(),[]);updateHeader()}
+
+const dlg=$("#auth");let mode="login";
+function setMode(m){
+  mode=m;$$("[data-tab]",dlg).forEach(b=>b.classList.toggle("on",b.dataset.tab===m));
+  $("#nameField").hidden=m!=="register";
+  $("#authTitle").textContent=m==="login"?"Connexion":"Créer un compte";
+  $("#authSubmit").textContent=m==="login"?"Se connecter":"Créer mon compte";
+  $("#aPass").autocomplete=m==="login"?"current-password":"new-password";
+  $("#authErr").textContent="";
+}
+function openAuth(m="login"){setMode(m);if(!dlg.open)dlg.showModal();setTimeout(()=>$(m==="register"?"#aName":"#aEmail").focus(),30)}
+dlg.addEventListener("click",e=>{if(e.target===dlg||e.target.closest("[data-close]"))dlg.close()});
+$$("[data-tab]",dlg).forEach(b=>b.addEventListener("click",()=>setMode(b.dataset.tab)));
+$("#authForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const err=m=>{$("#authErr").textContent=m};
+  const name=$("#aName").value.trim(),email=$("#aEmail").value.trim().toLowerCase(),pw=$("#aPass").value;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return err("Entrez une adresse e-mail valide.");
+  if(mode==="register"&&name.length<2)return err("Choisissez un pseudo d'au moins 2 caractères.");
+  if(pw.length<8)return err("Le mot de passe doit contenir au moins 8 caractères.");
+  const all=users();
+  try{
+    if(mode==="register"){
+      if(all[email])return err("Un compte existe déjà avec cette adresse. Connectez-vous.");
+      const salt=[...crypto.getRandomValues(new Uint8Array(12))].map(b=>b.toString(16).padStart(2,"0")).join("");
+      all[email]={name,salt,hash:await hashPw(pw,salt)};
+      if(!store.set("blash:users",all))return err("Impossible d'enregistrer le compte : le stockage du navigateur est désactivé.");
+      startSession(email);toast(`Bienvenue, ${name} !`);
+    }else{
+      const u=all[email];
+      if(!u||u.hash!==await hashPw(pw,u.salt))return err("E-mail ou mot de passe incorrect.");
+      startSession(email);toast(`Content de vous revoir, ${u.name}.`);
+    }
+    $("#authForm").reset();dlg.close();route();
+  }catch(ex){err("Ce navigateur ne permet pas de créer un compte sécurisé. Essayez avec un navigateur récent.")}
+});
+$("#accountBtn").addEventListener("click",()=>{session?(location.hash="#/compte"):openAuth("login")});
+
+/* ---------- Vues ---------- */
+const state={q:"",genre:"all"};
+let heroTimer=null;
+const genreText=g=>g.genres.map(x=>GENRES[x]).join(", ");
+function favBtn(id){const on=isFav(id);
+  return `<button class="fav${on?" on":""}" type="button" data-fav="${id}" aria-pressed="${on}" aria-label="${on?"Retirer des favoris":"Ajouter aux favoris"}">${ICON.heart}</button>`}
+function card(g){
+  return `<article class="card"><a class="cover" href="#/jeu/${g.id}" tabindex="-1" aria-hidden="true">${art(g)}<span class="badge">Gratuit</span></a>
+  <div class="card-body"><div><h3><a href="#/jeu/${g.id}">${esc(g.name)}</a></h3><p class="meta">${esc(genreText(g))}</p><span class="size">${esc(g.size)}</span></div>${favBtn(g.id)}</div></article>`;
+}
+function rowSection(id,title,sub,list,grid){
+  return `<section class="section" id="${id}"><div class="wrap"><div class="section-head"><div><h2>${title}</h2><p>${sub}</p></div></div>
+  <div class="${grid?"grid":"row"}">${list.map(card).join("")}</div></div></section>`;
+}
+function heroHTML(){
+  const l=HERO.map(id=>BY_ID[id]);
+  return `<section class="hero" aria-roledescription="carrousel" aria-label="Jeux populaires">
+  ${l.map((g,i)=>`<div class="slide${i===0?" on":""}" data-slide="${i}">${art(g,1)}
+    <div class="hero-copy"><div class="wrap"><div class="inner">
+      <div class="tags"><span class="tag free">Gratuit</span>${g.genres.map(x=>`<span class="tag">${GENRES[x]}</span>`).join("")}</div>
+      <h1>${esc(g.name)}</h1><p>${esc(g.pitch)}</p>
+      <div class="cta"><a class="btn primary" href="#/jeu/${g.id}">Découvrir le jeu</a>
+      <button class="btn ghost${isFav(g.id)?" on":""}" type="button" data-fav="${g.id}" aria-pressed="${isFav(g.id)}">${ICON.heart.replace("<svg","<svg fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"")}<span class="fl">${isFav(g.id)?"Dans vos favoris":"Ajouter aux favoris"}</span></button></div>
+    </div></div></div></div>`).join("")}
+  <div class="thumbs"><div class="wrap">${l.map((g,i)=>`<button class="thumb${i===0?" on":""}" type="button" data-hero="${i}" aria-label="Afficher ${esc(g.name)}"><strong>${esc(g.name)}</strong><small>${esc(genreText(g))}</small><span class="bar2"><i></i></span></button>`).join("")}</div></div>
+  </section>`;
+}
+function initHero(){
+  const hero=$(".hero");if(!hero)return;
+  let cur=0;const n=HERO.length;
+  const show=i=>{cur=(i+n)%n;$$(".slide",hero).forEach((s,k)=>s.classList.toggle("on",k===cur));$$(".thumb",hero).forEach((t,k)=>t.classList.toggle("on",k===cur))};
+  hero.addEventListener("click",e=>{const t=e.target.closest("[data-hero]");if(t)show(+t.dataset.hero)});
+  $$(".thumb .bar2 i",hero).forEach(b=>b.addEventListener("animationend",()=>show(cur+1)));
+  ["mouseenter","focusin"].forEach(ev=>hero.addEventListener(ev,()=>hero.classList.add("hold")));
+  ["mouseleave","focusout"].forEach(ev=>hero.addEventListener(ev,()=>hero.classList.remove("hold")));
+}
+function filtered(){
+  const q=norm(state.q.trim());
+  return GAMES.filter(g=>(state.genre==="all"||g.genres.includes(state.genre)) &&
+    (!q||norm([g.name,g.dev,g.pitch,genreText(g),g.desc.join(" ")].join(" ")).includes(q)));
+}
+function renderCatalog(){
+  const box=$("#catalog");if(!box)return;
+  const active=state.q.trim()||state.genre!=="all";
+  let h=`<div class="wrap filters" id="explorer"><div class="section-head" style="margin-bottom:14px"><div><h2>Explorer par genre</h2></div></div>
+  <div class="chips" role="group" aria-label="Filtrer par genre"><button class="chip${state.genre==="all"?" on":""}" type="button" data-genre="all" aria-pressed="${state.genre==="all"}">Tous</button>
+  ${Object.entries(GENRES).map(([k,v])=>`<button class="chip${state.genre===k?" on":""}" type="button" data-genre="${k}" aria-pressed="${state.genre===k}">${v}</button>`).join("")}</div></div>`;
+  if(active){
+    const l=filtered();
+    h+=`<section class="section"><div class="wrap"><div class="section-head"><div><h2>Résultats</h2><p>${l.length} jeu${l.length>1?"x":""} trouvé${l.length>1?"s":""}${state.q.trim()?` pour « ${esc(state.q.trim())} »`:""}</p></div></div>`+
+      (l.length?`<div class="grid">${l.map(card).join("")}</div>`:`<div class="empty"><h3>Aucun jeu ne correspond</h3><p>Vérifiez l'orthographe, essayez un autre mot ou retirez le filtre de genre.</p><button class="btn primary" type="button" data-reset>Afficher tous les jeux</button></div>`)+`</div></section>`;
+  }else{
+    const pop=GAMES.filter(g=>g.tags.includes("popular")).sort((a,b)=>b.n-a.n);
+    const neu=[...GAMES].sort((a,b)=>b.n-a.n).slice(0,8);
+    const rec=GAMES.filter(g=>g.tags.includes("recommended")).sort((a,b)=>b.n-a.n);
+    const free=[...GAMES].sort((a,b)=>a.name.localeCompare(b.name,"fr"));
+    h+=rowSection("populaires","Jeux populaires","Les jeux que la communauté joue le plus.",pop)+
+       rowSection("nouveautes","Nouveautés","Les derniers jeux ajoutés au catalogue.",neu)+
+       rowSection("gratuits","Jeux gratuits","Tout le catalogue est gratuit, distribué avec l'accord de ses auteurs.",free,true)+
+       rowSection("recommandes","Jeux recommandés","Notre sélection pour varier les plaisirs.",rec);
+  }
+  box.innerHTML=h;
+}
+function viewHome(){
+  document.title="Blash Studio – Découvrez, téléchargez et installez des jeux";
+  $("#app").innerHTML=heroHTML()+`<div id="catalog"></div>`;
+  renderCatalog();initHero();
+}
+function osName(){const u=navigator.userAgent;return /Windows/.test(u)?"Windows":/Mac/.test(u)?"macOS":/Linux|X11/.test(u)?"Linux":""}
+function viewGame(id){
+  const g=BY_ID[id];
+  if(!g){return viewNotFound()}
+  document.title=g.name+" – Blash Studio";
+  const os=osName(),host=new URL(g.download).hostname.replace(/^www\./,"");
+  const similar=GAMES.filter(x=>x.id!==g.id&&x.genres.some(k=>g.genres.includes(k))).slice(0,4);
+  const on=isFav(g.id);
+  const dlBtn=g.file
+    ?`<button class="btn primary big" type="button" data-dl="${g.id}">${ICON.dl} Télécharger et installer</button>`
+    :`<a class="btn primary big" href="${esc(g.download)}" target="_blank" rel="noopener noreferrer">${ICON.dl} Télécharger et installer</a>`;
+  $("#app").innerHTML=`<div class="wrap">
+   <div class="crumbs"><a href="#/">${ICON.back} Retour aux jeux</a></div>
+   <div class="banner">${art(g,2)}<div class="ttl"><h1>${esc(g.name)}</h1><div class="tags"><span class="tag free">Gratuit</span>${g.genres.map(x=>`<span class="tag">${GENRES[x]}</span>`).join("")}</div></div></div>
+   <div class="layout"><div>
+     <section class="block"><h2>À propos du jeu</h2><div class="prose">${g.desc.map(p=>`<p>${esc(p.trim())}</p>`).join("")}</div></section>
+     <section class="block"><h2>Captures d'écran</h2><div class="shots">${[3,4,5,6].map(v=>`<div class="shot">${art(g,v)}</div>`).join("")}</div>
+       <p class="shots-note">Ces visuels sont des illustrations de Blash Studio. Pour voir les vraies captures, consultez la <a href="${esc(g.official)}" target="_blank" rel="noopener noreferrer">page officielle du jeu</a>.</p></section>
+     <section class="block"><h2>Configuration minimale</h2><div class="specs">
+       <div class="spec"><small>Système</small>${esc(g.req.os)}</div><div class="spec"><small>Processeur</small>${esc(g.req.cpu)}</div>
+       <div class="spec"><small>Mémoire</small>${esc(g.req.ram)}</div><div class="spec"><small>Carte graphique</small>${esc(g.req.gpu)}</div>
+       <div class="spec"><small>Espace disque</small>${esc(g.req.disk)}</div></div></section>
+   </div>
+   <aside class="panel" aria-label="Téléchargement">
+     <div class="price">Gratuit</div>
+     ${dlBtn}
+     <div class="dl-progress" hidden aria-live="polite"><div class="track"><i></i></div><span></span></div>
+     <button class="btn ghost${on?" on":""}" type="button" data-fav="${g.id}" aria-pressed="${on}">${ICON.heart.replace("<svg","<svg fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"")}<span class="fl">${on?"Dans vos favoris":"Ajouter aux favoris"}</span></button>
+     <p class="dest">${g.file?"Le fichier est téléchargé directement depuis Blash Studio.":`Vous serez redirigé vers le site officiel (<strong>${esc(host)}</strong>), qui fournit l'installateur à jour.`}</p>
+     <dl class="facts">
+       <div><dt>Genre</dt><dd>${esc(genreText(g))}</dd></div>
+       <div><dt>Taille du téléchargement</dt><dd>${esc(g.size)}</dd></div>
+       <div><dt>Version</dt><dd>${esc(g.ver)}</dd></div>
+       <div><dt>Plateformes</dt><dd>${esc(g.platforms.join(", "))}</dd></div>
+       <div><dt>Éditeur</dt><dd>${esc(g.dev)}</dd></div>
+       <div><dt>Licence</dt><dd>${esc(g.license)}</dd></div>
+     </dl>
+     ${os?`<p class="dest">Votre système semble être <strong>${os}</strong>. Choisissez la version correspondante sur la page de téléchargement.</p>`:""}
+     <details class="how"><summary>Comment installer</summary><ol><li>Téléchargez la version adaptée à votre système.</li><li>Ouvrez l'installateur, ou décompressez l'archive si le jeu est fourni ainsi.</li><li>Lancez le jeu depuis votre menu d'applications ou le dossier d'installation.</li></ol></details>
+     <a class="dest" style="text-decoration:underline;text-underline-offset:3px" href="${esc(g.official)}" target="_blank" rel="noopener noreferrer">Page officielle du jeu</a>
+   </aside></div>
+   ${similar.length?`<section class="section" style="padding-top:20px"><div class="section-head"><h2>Vous aimerez aussi</h2></div><div class="grid">${similar.map(card).join("")}</div></section>`:""}
+  </div>`;
+}
+function viewFavs(){
+  document.title="Mes favoris – Blash Studio";
+  const l=favs.map(id=>BY_ID[id]).filter(Boolean);
+  $("#app").innerHTML=`<div class="wrap"><div class="page-title"><h1>Mes favoris</h1><p>${session?"Vos jeux favoris sont liés à votre compte sur cet appareil.":"Connectez-vous pour retrouver vos favoris sur votre compte."}</p></div>
+  ${l.length?`<div class="grid" style="margin-top:22px">${l.map(card).join("")}</div>`:`<div class="empty" style="margin-top:22px"><h3>Aucun favori pour l'instant</h3><p>Touchez le cœur d'un jeu pour le retrouver ici.</p><a class="btn primary" href="#/">Parcourir les jeux</a></div>`}</div>`;
+}
+function viewAccount(){
+  document.title="Mon compte – Blash Studio";
+  const u=session?users()[session]:null;
+  $("#app").innerHTML=`<div class="wrap">`+(u?
+   `<div class="account"><div class="who"><span class="avatar" aria-hidden="true">${esc(u.name.charAt(0).toUpperCase())}</span><div><h1>${esc(u.name)}</h1><span style="color:var(--muted)">${esc(session)}</span></div></div>
+    <p>Vous avez ${favs.length} jeu${favs.length>1?"x":""} en favori.</p>
+    <div class="row2"><a class="btn primary" href="#/favoris">Voir mes favoris</a><button class="btn ghost" type="button" data-logout>Se déconnecter</button></div></div>`:
+   `<div class="account"><h1>Votre compte Blash Studio</h1><p>Connectez-vous pour conserver vos favoris et retrouver vos jeux.</p><div class="row2"><button class="btn primary" type="button" data-open-auth="login">Se connecter</button><button class="btn ghost" type="button" data-open-auth="register">Créer un compte</button></div></div>`)+`</div>`;
+}
+function viewNotFound(){
+  document.title="Page introuvable – Blash Studio";
+  $("#app").innerHTML=`<div class="wrap"><div class="empty" style="margin-top:50px"><h3>Cette page n'existe pas</h3><p>Le jeu ou la page demandée est introuvable.</p><a class="btn primary" href="#/">Retour à l'accueil</a></div></div>`;
+}
+function route(){
+  clearTimeout(heroTimer);
+  const h=location.hash||"#/";let m;
+  if(h==="#/"||h==="#")viewHome();
+  else if((m=h.match(/^#\/jeu\/([\w-]+)/)))viewGame(m[1]);
+  else if(h==="#/favoris")viewFavs();
+  else if(h==="#/compte")viewAccount();
+  else viewNotFound();
+  if(!(h==="#/"||h==="#"))window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",()=>{route();if(!pendingScroll)window.scrollTo(0,0)});
+let pendingScroll=null;
+function goSection(id){
+  const go=()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})};
+  if(location.hash&&location.hash!=="#/"&&location.hash!=="#"){pendingScroll=id;location.hash="#/";setTimeout(()=>{go();pendingScroll=null},60)}
+  else{if(state.q||state.genre!=="all"){state.q="";state.genre="all";$("#q").value="";renderCatalog()}go()}
+}
+
+/* ---------- Téléchargement direct (si un fichier est hébergé avec autorisation) ---------- */
+async function startDownload(g){
+  const box=$(".dl-progress"),bar=$(".track i",box),txt=$("span",box);
+  box.hidden=false;bar.style.width="0";txt.textContent="Démarrage du téléchargement…";
+  try{
+    const res=await fetch(g.file);if(!res.ok||!res.body)throw new Error("http");
+    const total=+res.headers.get("content-length")||0,rd=res.body.getReader(),parts=[];let got=0;
+    for(;;){const {done,value}=await rd.read();if(done)break;parts.push(value);got+=value.length;
+      bar.style.width=total?Math.round(got/total*100)+"%":"60%";
+      txt.textContent=total?`${(got/1048576).toFixed(1)} Mo sur ${(total/1048576).toFixed(1)} Mo (${Math.round(got/total*100)} %)`:`${(got/1048576).toFixed(1)} Mo reçus`}
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(parts));a.download=g.fileName||g.id;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+    bar.style.width="100%";txt.textContent="Téléchargement terminé. Ouvrez le fichier pour lancer l'installation.";
+  }catch(e){
+    box.hidden=true;toast("Le téléchargement direct a échoué. Ouverture du site officiel.");
+    window.open(g.download,"_blank","noopener");
+  }
+}
+
+/* ---------- Événements ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-fav],[data-genre],[data-reset],[data-scroll],[data-dl],[data-open-auth],[data-logout]");
+  if(!t)return;
+  if(t.dataset.fav){e.preventDefault();toggleFav(t.dataset.fav)}
+  else if(t.dataset.genre){state.genre=t.dataset.genre;renderCatalog()}
+  else if(t.hasAttribute("data-reset")){state.q="";state.genre="all";$("#q").value="";renderCatalog()}
+  else if(t.dataset.scroll){goSection(t.dataset.scroll)}
+  else if(t.dataset.dl){startDownload(BY_ID[t.dataset.dl])}
+  else if(t.dataset.openAuth){openAuth(t.dataset.openAuth)}
+  else if(t.hasAttribute("data-logout")){endSession();toast("Vous êtes déconnecté.");route()}
+});
+let firstSearch=true;
+$("#q").addEventListener("input",e=>{
+  state.q=e.target.value;
+  const h=location.hash;
+  if(h&&h!=="#/"&&h!=="#"){location.hash="#/";return}
+  renderCatalog();
+  if(state.q.trim()&&firstSearch){firstSearch=false;const ex=$("#explorer");if(ex){const y=ex.getBoundingClientRect().top+scrollY-90;if(scrollY<y-120)window.scrollTo({top:y,behavior:"smooth"})}}
+  if(!state.q.trim())firstSearch=true;
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&!dlg.open){e.preventDefault();$("#q").focus()}
+});
+
+/* ---------- Démarrage ---------- */
+if(session&&!users()[session]){session=null;store.del("blash:session");favs=store.get(favKey(),[])}
+updateHeader();route();
+</script>
 </body>
 </html>
